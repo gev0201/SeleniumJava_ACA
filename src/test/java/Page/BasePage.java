@@ -1,5 +1,6 @@
 package Page;
 
+import Utils.Helpers;
 import org.apache.commons.lang3.ObjectUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.StaleElementReferenceException;
@@ -13,6 +14,7 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.NoSuchElementException;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 
@@ -20,6 +22,7 @@ import java.util.function.Function;
 public class BasePage {
 
     WebDriver driver;
+    Helpers helpers = new Helpers();
 
     public BasePage(WebDriver driver) {
         this.driver = driver;
@@ -45,11 +48,18 @@ public class BasePage {
         }
     }
 
-    public WebElement getElement(String locatorType, String locator){
-        By byType = getByType(locatorType, locator);
-        WebElement elem = driver.findElement(byType);
+    public WebElement getElement(String locatorType, String locator) {
+        WebElement elem = null;
+        try {
+            By byType = getByType(locatorType, locator);
+            elem = driver.findElement(byType);
+            return elem;
+        } catch (Exception e) {
+            helpers.loging().error("Unable to get " + locator + " element from Dom");
+        }
         return elem;
     }
+
 
     public List<WebElement> getElements(String locatorType, String locator){
         By byType = getByType(locatorType, locator);

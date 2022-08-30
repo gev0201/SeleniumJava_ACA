@@ -12,7 +12,7 @@ public class LoginPage {
     public void login(String userName, String password){
         basePage  = new BasePage(driver);
         basePage.checkPageTitle("STORE");
-        basePage.clickOnElement("id","login2");
+        basePage.clickOnElement("id","logi");
         basePage.insertInto("id", "loginusername", userName);
         basePage.insertInto("id", "loginpassword", password);
         basePage.clickOnElement("css", "[onclick='logIn()']");
