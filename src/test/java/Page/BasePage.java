@@ -7,6 +7,7 @@ import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 
@@ -43,8 +44,10 @@ public class BasePage {
             return By.id(locator);
         } else if (locatorType.toLowerCase(Locale.ROOT).equals("name")){
             return By.name(locator);
+        } else if (locatorType.toLowerCase(Locale.ROOT).equals("text")){
+            return By.linkText(locator);
         } else {
-            return By.tagName("");
+            return null;
         }
     }
 
@@ -55,7 +58,7 @@ public class BasePage {
             elem = driver.findElement(byType);
             return elem;
         } catch (Exception e) {
-            helpers.loging().error("Unable to get " + locator + " element from Dom");
+//            helpers.loging().error("Unable to get " + locator + " element from Dom");
         }
         return elem;
     }
@@ -179,5 +182,23 @@ public class BasePage {
         WebElement elem = getElement(locatorType, locator);
         String actualText = elem.getText();
         Assert.assertEquals(actualText, expectedText, "The expected text from element not mutch");
+    }
+
+    public WebElement getWebElementByText(String webElemText, List<WebElement> elems){
+        WebElement usrNemElem = null;
+        for (WebElement el : elems) {
+            String aaa = el.getText();
+            if (el.getText().equals(webElemText)){
+                usrNemElem = el;
+                break;
+            }
+        }
+        return usrNemElem;
+    }
+
+    public void selectFromDropDown(String locatorType, String locator, String selectListItem){
+        WebElement sel = getElement(locatorType, locator);
+        Select filter = new Select(sel);
+        filter.selectByVisibleText(selectListItem);
     }
 }

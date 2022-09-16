@@ -1,6 +1,11 @@
 package Page;
 
+import Utils.Helpers;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class LoginPage {
     public LoginPage(WebDriver driver) {
@@ -8,14 +13,24 @@ public class LoginPage {
     }
     WebDriver driver;
     BasePage basePage;
+    Helpers helpers = new Helpers();
 
-    public void login(String userName, String password){
+    public void login(){
         basePage  = new BasePage(driver);
-        basePage.checkPageTitle("STORE");
-        basePage.clickOnElement("id","logi");
-        basePage.insertInto("id", "loginusername", userName);
-        basePage.insertInto("id", "loginpassword", password);
-        basePage.clickOnElement("css", "[onclick='logIn()']");
-        basePage.checkElemetText("id", "nameofuser", "Welcome " + userName);
+        basePage.getUrl("https://demo.guru99.com/");
+        basePage.checkPageTitle("Guru99 Bank Home Page");
+        basePage.insertInto("name", "emailid", helpers.randomStr(8) + "@mail.ccc");
+        basePage.clickOnElement("name", "btnLogin");
+    }
+
+    public Map getCredentials(){
+        basePage  = new BasePage(driver);
+        login();
+        Map<String, String> credentials = new HashMap<>();
+        WebElement loginWebElement = basePage.getElement("css", "tr:nth-child(4)  td[align='center']:nth-child(2)");
+        WebElement password = basePage.getElement("css", "tr:nth-child(5)  td[align='center']:nth-child(2)");
+        credentials.put("login", loginWebElement.getText());
+        credentials.put("password", password.getText());
+        return credentials;
     }
 }

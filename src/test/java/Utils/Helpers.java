@@ -1,14 +1,11 @@
 package Utils;
 
-import Test.LogClass;
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 import java.security.SecureRandom;
+import java.util.logging.Logger;
 
 public class Helpers {
-
-    public static final Logger logger = LogManager.getLogger(LogClass.class.getName());
 
     public String randomStr(int strLenght){
         String AB = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
@@ -19,8 +16,4 @@ public class Helpers {
         return sb.toString();
     }
 
-    public Logger loging(){
-        return logger;
-
-    }
 }
